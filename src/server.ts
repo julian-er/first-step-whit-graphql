@@ -1,8 +1,11 @@
 import express from 'express';
 import compression from 'compression';
 import cors from 'cors';
-import {graphqlHTTP} from 'express-graphql';
+//The line bellow is use for grapphiQL
+//import {graphqlHTTP} from 'express-graphql';
 import schema from './schema'
+import {ApolloServer} from 'apollo-server-express';
+import { createServer } from 'http';
 
 const app = express();
 //settings
@@ -45,18 +48,30 @@ app.use(compression());
 //     resolvers
 // })
 
+// **** When you create a new structure, this section must go in resolversmap, query and index in another folders
+
+// **** Routing whit graphiQL
+// app.use('/', graphqlHTTP({
+//     schema,
+//     graphiql: true
+// }))
+// **** Routing whit graphiQL
 
 
-//routing
-app.use('/', graphqlHTTP({
+
+// Apollo configs
+
+const server = new ApolloServer({
     schema,
-    graphiql: true
-}))
+    introspection:true //this is necessary
 
- 
+});
+
+server.applyMiddleware({app})
+const htppServer = createServer(app);
 
 //starting server
-app.listen(
+htppServer.listen(
     app.get('port'),
     ()=> console.log(`server on port http://localhost:${app.get('port')}/graphql`)
 )
