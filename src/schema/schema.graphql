@@ -1,0 +1,8 @@
+type Query{
+    "This is a simple cheer "
+        hola: String!
+    "This greeting needs someone to say hello"
+        holaConNombre(nombre: String!): String!
+    "Call this for cheer graphql"
+        holaMundoGraphql: String!
+    }
